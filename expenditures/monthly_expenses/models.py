@@ -4,12 +4,19 @@ import uuid
 from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
+
+class Root(models.Model):
+    id = models.AutoField(primary_key=True)
+    name= models.CharField(max_length=20, null=False, unique=True)
+
 class Family(models.Model):
     member_first_name = models.CharField(max_length=200, default='sistla', null=False)
     member_last_name = models.CharField(max_length=200, default= 'test',null=False)
     id = models.UUIDField(default=uuid.uuid4, primary_key = True)
     date_of_birth = models.DateField(default=timezone.now)
     gender = models.CharField(max_length=10)
+    family_id= models.ForeignKey(Root, on_delete=models.CASCADE)
+
     """
     def __str__(self):
         return self.member_first_name +" "+self.member_last_name
