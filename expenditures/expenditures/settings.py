@@ -32,8 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'rest_framework',
-    #'monthly_expenses.apps.MonthyExpensesConfig',
-    'monthly_expenses',
+    'monthly_expenses.apps.MonthyExpensesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,7 +79,7 @@ DATABASES = {
 
     'default': {
         'ENGINE':'django.db.backends.postgresql_psycopg2',
-        'NAME': 'montly_expenses',
+        'NAME': 'monthly_expenses',
         'USER': 'postgres',
         'PASSWORD': 'root',
         'HOST': '127.0.0.1',

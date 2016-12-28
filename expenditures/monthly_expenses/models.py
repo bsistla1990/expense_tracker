@@ -5,14 +5,15 @@ from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 class Family(models.Model):
-    member_name = models.CharField(max_length=255)
+    member_first_name = models.CharField(max_length=200, default='sistla', null=False)
+    member_last_name = models.CharField(max_length=200, default= 'test',null=False)
     id = models.UUIDField(default=uuid.uuid4, primary_key = True)
     date_of_birth = models.DateField(default=timezone.now)
     gender = models.CharField(max_length=10)
-
+    """
     def __str__(self):
-        return self.member_name
-
+        return self.member_first_name +" "+self.member_last_name
+    """
 class Income(models.Model):
     earned_by= models.ForeignKey(Family, on_delete=models.CASCADE)
     id = models.UUIDField(default = uuid.uuid4, primary_key = True)
