@@ -2,6 +2,9 @@ from django.db import models
 from django.utils import timezone
 import uuid
 from django.contrib.postgres.fields import ArrayField
+import string, random
+
+
 
 # Create your models here.
 
@@ -15,7 +18,8 @@ class Family(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key = True)
     date_of_birth = models.DateField(default=timezone.now)
     gender = models.CharField(max_length=10)
-    family_id= models.ForeignKey(Root, on_delete=models.CASCADE)
+    root = models.ForeignKey(Root, on_delete=models.CASCADE, null=True)
+    login_name= models.CharField(max_length=150, default=''.join(random.sample(string.ascii_lowercase, 10)), null=False, unique=True)
 
     """
     def __str__(self):

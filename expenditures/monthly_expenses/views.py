@@ -1,6 +1,8 @@
-from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.shortcuts import redirect
+
+from rest_framework.renderers import TemplateHTMLRenderer
 
 from .serializers import *
 from .models import *
@@ -19,29 +21,62 @@ features ={
 
 
 
+class LoginView(APIView):
+    def post(self,request):
+        user=dict(request.data)
+        user=Family.objects.filter(login_name=user['login_name'])
+        if not user:
+            return Response("Login Failed")
+        print(dir(request))
+        print(request.user)
+        return Response(FamilySerializer(user, many=True).data)
+
+
+
+
+
+
 class RootListView(APIView):
 
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'monthly_expenses/root_list.html'
+
     def get(self, request, format=None):
-        serializer_data = RootSerializer(Root.objects.all(), many=True).data
-        return Response(serializer_data)
+        roots=Root.objects.all()
+        serializer_data = RootSerializer(roots, many=True).data
+        return Response({'roots':serializer_data})
 
 class RootDetailView(APIView):
+
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'monthly_expenses/root_detail.html'
 
     def get_object(self,pk):
         return Root.objects.get(id=pk)
 
     def get(self, request, pk, format=None):
         serializer_data = RootSerializer(Root.objects.filter(id=pk), many=True).data
-        return Response(serializer_data)
+        print(serializer_data)
+        return Response({'root':serializer_data})
 
     def post(self, request, format=None):
-        serializer_data = None
-        print(request.data)
         family = dict(request.data)
-        family = Root(**family)
-        family.save()
+        for root in family['name']:
+
+            family = Root(name=root)
+            family.save()
         serializer_data= RootSerializer(Root.objects.filter(id=family.id), many=True).data
-        return Response(serializer_data)
+        #return Response(serializer_data)
+        return redirect('list_root')
+
+    def put(self, request, format=None):
+        pk=request.data
+        print(pk)
+        pk=pk['id']
+        root = self.get_object(pk)
+        serializer = RootSerializer(root, data=request.data)
+        serializer.save()
+
 
     def delete(self, request, pk):
         root=self.get_object(pk)
@@ -51,44 +86,83 @@ class RootDetailView(APIView):
 
 class FamilyListView(APIView):
     def get(self, request, root_id, format=None):
-        serializer_data = FamilySerializer(Family.objects.filter(family_id_id=root_id), many=True).data
+        serializer_data = FamilySerializer(Family.objects.filter(root=root_id), many=True).data
         return Response(serializer_data)
 
 class FamilyDetailView(APIView):
 
-    def get_object(self, pk):
-        pass
-
-
-    def get(self, request, root_id, member_id, format=None):
-        serializer_data=FamilySerializer(Family.objects.filter(id=member_id, family_id_id=root_id), many=True).data
+    def get(self, request, member_id, format=None):
+        serializer_data=FamilySerializer(Family.objects.filter(id=member_id), many=True).data
         return Response(serializer_data)
 
-    def post(self, request,root_id, format = None):
-        serializer_data=None
+    def post(self, request,format = None):
         members=[]
         members_to_add = list(request.data)
         if not members_to_add:
             return Response("No members specified to be added")
         for member in members_to_add:
-            member['family_id']=Root.objects.filter(id=root_id).first()
+            #Need to change this logic
+            root_id=1
+
+            member['root']=Root.objects.filter(id=root_id).first()
             member=Family(**member)
             members.append(member)
-        try:
-            serializer_data=FamilySerializer(Family.objects.bulk_create(members), many=True).data
-            return Response(serializer_data)
-        except Exception as e:
-            return Response(e)
+        serializer_data=FamilySerializer(Family.objects.bulk_create(members), many=True).data
+        return Response(serializer_data)
 
-    def delete(self, request, root_id, member_id):
+    def delete(self, request, member_id):
         member=Family.objects.get(id=member_id)
         member.delete()
         return Response(FamilySerializer(member).data)
 
 
 
-class IncomeView(APIView):
-    def get(self, request):
+class IncomeListView(APIView):
+    def get(self, request, root_id, format=None):
+        serializer_data = []
+        family_members=Family.objects.filter(root=root_id)
+        for member in family_members:
+            income=IncomeSerializer(Income.objects.filter(earned_by=member.id), many=True).data
+            serializer_data.append(income)
+        return Response(serializer_data)
+
+class IncomeFilterView(APIView):
+    def post(self, request):
+        pass
+
+class IncomeDetailView(APIView):
+    def get(self, request, income_id):
+        res=dict()
+        filters= dict(request.GET)
+        if not filters:
+            res=Income.objects.all()
+        else:
+            pass
+
+        return Response(json.dumps(res))
+
+    def post(self, request):
+        print(request.data)
+        return Response("POST")
+
+
+
+
+class ExpenseListView(APIView):
+    def get(self, request, root_id, format=None):
+        serializer_data = []
+        family_members=Family.objects.filter(root=root_id)
+        for member in family_members:
+            income=IncomeSerializer(Income.objects.filter(earned_by=member.id), many=True).data
+            serializer_data.append(income)
+        return Response(serializer_data)
+
+class ExpenseFilterView(APIView):
+    def post(self, request):
+        pass
+
+class ExpenseDetailView(APIView):
+    def get(self, request, income_id):
         res=dict()
         filters= dict(request.GET)
         if not filters:

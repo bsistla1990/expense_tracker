@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Roots</title>
+</head>
+<body>
+    <center>
+        <h1> Roots</h1>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+            {% for root in roots %}
+            <tr>
+                <td><a href="{% url 'read_root'  pk=root.id %}">{{root.id}}</a></td>
+                <td>{{root.name}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <form action="{% url 'create_root' %}" method="POST">
+        <table>
+            <tr>
+                <td> Root Name</td>
+                <td><input type="text" name="name"> </td>
+                <td><input type="Submit" value="Create Root"</td>
+            </tr>
+        </table>
+    </center>
+</body>
+</html>

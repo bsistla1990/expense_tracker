@@ -21,10 +21,5 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=20, unique=True))
             ],
         ),
-        migrations.AddField(
-            model_name='family',
-            name='family_id',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='monthly_expenses.Root'),
-            preserve_default=False,
-        ),
+
     ]

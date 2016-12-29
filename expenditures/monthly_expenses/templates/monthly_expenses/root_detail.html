@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% load rest_framework %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Root Details</title>
+</head>
+<body>
+<center>
+    <h1>Edit Root</h1>
+    <form action="{% url 'modify_root' %} " method="PUT">
+    <table>
+            {% for ele in root %}
+            <tr>
+                <td>ID</td>
+                <td>{{ele.id}}</td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" value={{ele.name}} name="name"></td>
+                <td><input type="submit" value="Modify"></td>
+            </tr>
+            <tr>
+                <td>{{root.id}}</a></td>
+                <td>{{root.name}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+        </form>
+    </center>
+</body>
+</html>
