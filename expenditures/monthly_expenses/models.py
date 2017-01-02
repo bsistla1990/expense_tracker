@@ -55,3 +55,6 @@ class Expenditure(models.Model):
     comments = models.CharField(max_length=255)
     payment_type=models.ForeignKey(Payment, on_delete=models.CASCADE)
     type= models.ForeignKey(Expense_category, related_name="%(class)s_type", on_delete=models.CASCADE)
+
+class User(models.Model):
+    id= models.AutoField(primary_key=True)

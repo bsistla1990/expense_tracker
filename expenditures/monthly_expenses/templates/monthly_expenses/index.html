@@ -2,9 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Index</title>
 </head>
 <body>
+<center>
+    <h1> Welcome to The Expense Tracker Application</h1>
+    <table>
+        {% for feature in features %}
+        <tr>
+            <td><a href = "{{feature}}">{{feature}}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+</center>
 
 </body>
 </html>

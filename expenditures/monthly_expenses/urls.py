@@ -6,18 +6,20 @@ from .views import *
 urlpatterns = [
 
     #login urls
-    url(r'^login$', LoginView.as_view()),
+    url(r'^/login$', HomeView.as_view(),name='home_view'),
 
+    #index url
+    url(r'^$', LoginView.as_view(), name='login_view'),
 
     #root urls
     url(r'^root$', RootListView.as_view(), name='list_root'),
     url(r'^root/(?P<pk>\d+)', RootDetailView.as_view(),name='read_root'),
     url(r'^root/create$', RootDetailView.as_view(), name='create_root'),
-    url(r'^root/delete/(?P<pk>\d+)', RootDetailView.as_view(), name='delete_root'),
-    url(r'^root/modify/', RootDetailView.as_view(), name='modify_root'),
+    url(r'^root/delete/', RootDeleteView.as_view(), name='delete_root'),
+    url(r'^root/modify/', RootUpdateView.as_view(), name='modify_root'),
 
     #family member urls
-    url(r'^family/(?P<root_id>\d+)$', FamilyListView.as_view()),
+    url(r'^family/(?P<root_id>\d+)$', FamilyListView.as_view(), name='list_family'),
     url(r'^family/(?P<member_id>[a-f0-9]{8}-?[a-f0-9]{4}-?[a-f0-9]{4}-?[a-f0-9]{4}-?[a-f0-9]{12})', FamilyDetailView.as_view(),name='read_family_member'),
     url(r'^family/create$', FamilyDetailView.as_view(), name='create_family_member'),
     url(r'^family/delete/(?P<member_id>[a-f0-9]{8}-?[a-f0-9]{4}-?[a-f0-9]{4}-?[a-f0-9]{4}-?[a-f0-9]{12})', FamilyDetailView.as_view(), name='delete_root'),

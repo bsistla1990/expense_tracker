@@ -8,23 +8,20 @@
 <body>
 <center>
     <h1>Edit Root</h1>
-    <form action="{% url 'modify_root' %} " method="PUT">
+    <form name= "delete_modify" method="POST">
     <table>
-            {% for ele in root %}
             <tr>
                 <td>ID</td>
-                <td>{{ele.id}}</td>
+                <td><input type="text" value={{root.id}} readonly name="id"></td>
             </tr>
             <tr>
                 <td>Name</td>
-                <td><input type="text" value={{ele.name}} name="name"></td>
-                <td><input type="submit" value="Modify"></td>
+                <td><input type="text" value={{root.name}} name="name"></td>
             </tr>
             <tr>
-                <td>{{root.id}}</a></td>
-                <td>{{root.name}}</td>
+                <td><input type="submit" value="Delete" formaction="{% url 'delete_root' %}"></td>
+                <td><input type="submit" value="Modify" formaction="{% url 'modify_root' %}"></td>
             </tr>
-        {% endfor %}
         </table>
         </form>
     </center>
