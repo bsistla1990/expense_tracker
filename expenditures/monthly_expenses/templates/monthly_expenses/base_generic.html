@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+    <center>
+        <h1> Expense Tracker</h1>
+    <div align="right">
+        <a href="{% url 'logout_view' %}">Logout</a>
+    </div>
+    </center>
+    <body>
+    {% block body %}
+    <div class="container">
+        {% block container %}
+        {% endblock %}
+    </div>
+    {% endblock %}
+    </body>

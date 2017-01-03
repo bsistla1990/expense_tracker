@@ -5,6 +5,8 @@ from django.contrib.postgres.fields import ArrayField
 import string, random
 
 
+from django.contrib.auth.models import User
+
 
 # Create your models here.
 
@@ -13,18 +15,26 @@ class Root(models.Model):
     name= models.CharField(max_length=20, null=False, unique=True)
 
 class Family(models.Model):
-    member_first_name = models.CharField(max_length=200, default='sistla', null=False)
-    member_last_name = models.CharField(max_length=200, default= 'test',null=False)
+
     id = models.UUIDField(default=uuid.uuid4, primary_key = True)
     date_of_birth = models.DateField(default=timezone.now)
     gender = models.CharField(max_length=10)
     root = models.ForeignKey(Root, on_delete=models.CASCADE, null=True)
-    login_name= models.CharField(max_length=150, default=''.join(random.sample(string.ascii_lowercase, 10)), null=False, unique=True)
+    member = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     """
     def __str__(self):
         return self.member_first_name +" "+self.member_last_name
     """
+
+class Member(User):
+    is_head =  models.BooleanField(default=False)
+    root = models.ForeignKey(Root, on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        proxy=True
+
+
 class Income(models.Model):
     earned_by= models.ForeignKey(Family, on_delete=models.CASCADE)
     id = models.UUIDField(default = uuid.uuid4, primary_key = True)

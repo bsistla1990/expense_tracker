@@ -5,11 +5,13 @@ from .views import *
 
 urlpatterns = [
 
-    #login urls
-    url(r'^/login$', HomeView.as_view(),name='home_view'),
+    #login/logout urls
+    url(r'^login$', LoginView.as_view(),name='login_view'),
+    url(r'^validate$', LoginValidationView.as_view(),name='login_validation_view'),
+    url(r'^logout$', LogOutView.as_view(),name='logout_view'),
 
     #index url
-    url(r'^$', LoginView.as_view(), name='login_view'),
+    url(r'^$', HomeView.as_view(), name='home_view'),
 
     #root urls
     url(r'^root$', RootListView.as_view(), name='list_root'),

@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Index</title>
-</head>
-<body>
+{% extends "monthly_expenses/base_generic.html" %}
+{% block container %}
 <center>
-    <h1> Welcome to The Expense Tracker Application</h1>
     <table>
         {% for feature in features %}
         <tr>
@@ -14,9 +8,5 @@
         </tr>
         {% endfor %}
     </table>
-
-
 </center>
-
-</body>
-</html>
+{% endblock %}

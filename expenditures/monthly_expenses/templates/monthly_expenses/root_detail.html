@@ -1,14 +1,9 @@
-<!DOCTYPE html>
+{% extends "monthly_expenses/base_generic.html" %}
 {% load rest_framework %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Root Details</title>
-</head>
-<body>
+{% block container %}
 <center>
     <h1>Edit Root</h1>
-    <form name= "delete_modify" method="POST">
+    <form name= "delete_modify" method="POST">{% csrf_token %}
     <table>
             <tr>
                 <td>ID</td>
@@ -25,5 +20,4 @@
         </table>
         </form>
     </center>
-</body>
-</html>
+{% endblock %}
